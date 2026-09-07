@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<robot name="six_axis_arm">
+
+  <!-- ========== BASE (fixed foot) ========== -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.10" length="0.05"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- ========== JOINT 1: waist rotation (left/right) ========== -->
+  <joint name="base_yaw" type="revolute">
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>   <!-- sits on top of base -->
+    <axis xyz="0 0 1"/>                     <!-- rotates around Z (vertical) -->
+    <limit lower="-3.14" upper="3.14" effort="10" velocity="1.0"/>
+  </joint>
+
+  <!-- ========== LINK 1: column (0.15 m) ========== -->
+  <link name="link1">
+    <visual>
+      <origin xyz="0 0 0.075" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.06" length="0.15"/>
+      </geometry>
+      <material name="dark_gray">
+        <color rgba="0.3 0.3 0.3 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- ========== JOINT 2: shoulder (forward/back tilt) ========== -->
+  <joint name="shoulder_pitch" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0 0 0.15" rpy="0 0 0"/>   <!-- top of column -->
+    <axis xyz="0 1 0"/>                     <!-- rotates around Y -->
+    <limit lower="-3.14" upper="3.14" effort="10" velocity="1.0"/>
+  </joint>
+
+  <!-- ========== LINK 2: upper arm (0.30 m) ========== -->
+  <link name="link2">
+    <visual>
+      <origin xyz="0 0 0.15" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.06 0.06 0.30"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.2 0.2 0.8 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- ========== JOINT 3: elbow (bend) ========== -->
+  <joint name="elbow_pitch" type="revolute">
+    <parent link="link2"/>
+    <child link="link3"/>
+    <origin xyz="0 0 0.30" rpy="0 0 0"/>   <!-- end of upper arm -->
+    <axis xyz="0 1 0"/>
+    <limit lower="-3.14" upper="3.14" effort="10" velocity="1.0"/>
+  </joint>
+
+  <!-- ========== LINK 3: forearm (0.25 m) ========== -->
+  <link name="link3">
+    <visual>
+      <origin xyz="0 0 0.125" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.25"/>
+      </geometry>
+      <material name="orange">
+        <color rgba="0.9 0.5 0.1 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- ========== JOINT 4: wrist roll (twist along forearm) ========== -->
+  <joint name="wrist_roll" type="revolute">
+    <parent link="link3"/>
+    <child link="link4"/>
+    <origin xyz="0 0 0.25" rpy="0 0 0"/>   <!-- end of forearm -->
+    <axis xyz="0 0 1"/>                     <!-- rotates around Z = forearm direction -->
+    <limit lower="-3.14" upper="3.14" effort="5" velocity="1.0"/>
+  </joint>
+
+  <!-- ========== LINK 4: wrist segment 1 (0.05 m) ========== -->
+  <link name="link4">
+    <visual>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.035" length="0.05"/>
+      </geometry>
+      <material name="gray2">
+        <color rgba="0.5 0.5 0.5 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- ========== JOINT 5: wrist tilt (up/down) ========== -->
+  <joint name="wrist_pitch" type="revolute">
+    <parent link="link4"/>
+    <child link="link5"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="5" velocity="1.0"/>
+  </joint>
+
+  <!-- ========== LINK 5: wrist segment 2 (0.05 m) ========== -->
+  <link name="link5">
+    <visual>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.05"/>
+      </geometry>
+      <material name="gray3">
+        <color rgba="0.5 0.5 0.5 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- ========== JOINT 6: tool spin ========== -->
+  <joint name="tool_roll" type="revolute">
+    <parent link="link5"/>
+    <child link="link6"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="2" velocity="1.0"/>
+  </joint>
+
+  <!-- ========== LINK 6: tool (0.10 m) ========== -->
+  <link name="link6">
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.10"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+</robot>
